@@ -1,4 +1,4 @@
-"use strict";
+import { animate } from './helpers';
 
 const modal = () => {
     const modal = document.querySelector('.popup');
@@ -6,50 +6,52 @@ const modal = () => {
     const buttons = document.querySelectorAll('.popup-btn');
     const closeBtn = modal.querySelector('.popup-close');
 
+    const showModal = (time = 1000) => {
+        modal.style.display = 'block';
 
-    // выезд справа, по центру за time в ms, из расчета  60 кадров в 1s, растояния в %
-    const time = 500
-    const animationPopupContent = (show = true) => {
-        const path = (1 + popupContent.getBoundingClientRect().width / modal.clientWidth) * 50
-        const maxCount = Math.floor(0.06 * time)
-        const step = path / maxCount * (show ? -1 : 1)
-        const leftStart = show ? 100 : 100 - path
-        const leftEnd = show ? 100 - path : 100
+        if (window.innerWidth < 768) {
+            popupContent.style.left = `50%`;
+            popupContent.style.transform = `translateX(-20rem )`;
 
-        let count = 0;
+        } else {
+            animate({
+                timingplane: 'aseOutExpo',
+                draw(progress) {
+                    popupContent.style.left = `${100 - progress * 50}%`;
+                    popupContent.style.transform = `translateX( ${-20 * progress}rem )`;
+                },
+                duration: time
+            });
+        }
+    };
 
-        (function animation() {
-            if (count < maxCount) {
-                requestAnimationFrame(animation);
-                popupContent.style.left = `${leftStart + count * step}%`;
-                count++;
-            } else {
-                popupContent.style.left = `${leftEnd}%`;
-            }
-        })();
+    const hideModal = (time = 300) => {
+
+        if (window.innerWidth < 768) {
+            popupContent.style.left = ``;
+            popupContent.style.transform = ``;
+            modal.style.display = ''
+
+        } else {
+            animate({
+                draw(progress) {
+                    modal.style.opacity = `${1 - progress}`;
+                },
+                duration: time
+            });
+            setTimeout(() => {
+                modal.style.opacity = '';
+                popupContent.style.left = ``;
+                popupContent.style.transform = ``;
+                modal.style.display = ''
+            }, time)
+        }
     };
 
     buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            popupContent.style.transform = `none`;
-            if (window.innerWidth > 767) {
-                modal.style.display = 'block';
-                animationPopupContent();
-            } else {
-                popupContent.style.left = `unset`;
-                modal.style.display = 'flex';
-                modal.style.justifyContent = "center";
-            }
-        });
+        btn.addEventListener('click', () => showModal());
     });
-
-    closeBtn.addEventListener('click', () => {
-        if (window.innerWidth > 767) { animationPopupContent(false); }
-        setTimeout(() => {
-            popupContent.style.transform = ``;
-            modal.style.display = ''
-        }, time)
-    });
+    closeBtn.addEventListener('click', () => hideModal());
 };
 
 export default modal;
