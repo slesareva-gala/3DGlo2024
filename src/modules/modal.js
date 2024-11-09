@@ -35,16 +35,15 @@ const modal = () => {
         } else {
             animate({
                 draw(progress) {
-                    modal.style.opacity = `${1 - progress}`;
+                    if (progress === 1) {
+                        modal.style.opacity = '';
+                        popupContent.style.left = ``;
+                        popupContent.style.transform = ``;
+                        modal.style.display = ''
+                    } else modal.style.opacity = `${1 - progress}`;
                 },
                 duration: time
             });
-            setTimeout(() => {
-                modal.style.opacity = '';
-                popupContent.style.left = ``;
-                popupContent.style.transform = ``;
-                modal.style.display = ''
-            }, time)
         }
     };
 

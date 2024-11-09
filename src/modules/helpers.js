@@ -43,7 +43,6 @@ export const smoothScroll = (selectors, duration = 1000) => {
   // счетчик прокрученных строк и целевое кол-во строк к прокрутке всё за 1 сек
   const scrollY = window.scrollY;
 
-  console.log(selectors)
   // необходимо докрутить до начала элемента перехода
   const transitionHeight = document.querySelector(selectors).getBoundingClientRect().top;
 

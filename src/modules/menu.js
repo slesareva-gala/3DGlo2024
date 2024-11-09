@@ -5,7 +5,7 @@ const menu = () => {
     const menu = document.querySelector('menu')
     const closeBtn = menu.querySelector('.close-btn')
     const menuItems = menu.querySelectorAll('ul>li>a')
-    const goServiceBlock = document.querySelector('menu a')
+    const goServiceBlock = document.querySelector('main a')
 
     const handleMenu = () => {
         menu.classList.toggle('active-menu')
@@ -13,11 +13,14 @@ const menu = () => {
 
     menuBtm.addEventListener('click', handleMenu)
     closeBtn.addEventListener('click', handleMenu)
-    menuItems.forEach(menuItem => menuItem.addEventListener('click', handleMenu))
+    menuItems.forEach(menuItem => menuItem.addEventListener('click', (e) => {
+        handleMenu()
+        smoothScroll(e.target.getAttribute("href"))
+    }))
 
     goServiceBlock.addEventListener('click', (e) => {
-        console.dir(e.target.closest('menu a'))
-        smoothScroll(goServiceBlock.getAttribute("href"))
+        const el = e.target.closest('main a')
+        smoothScroll(el.getAttribute("href"))
     })
 
 }
