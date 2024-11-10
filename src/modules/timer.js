@@ -15,18 +15,20 @@ const timer = (deadline) => {
         return { timeRemaining, hours, minutes, seconds }
     }
 
-    const updateClock = setInterval(() => {
+    const showClock = () => {
         let getTime = getTimeRemaining();
         const picture = (n) => (n < 10) ? ('0' + n).slice(-2) : n;
 
         timerHours.textContent = picture(getTime.hours)
         timerMinutes.textContent = picture(getTime.minutes)
         timerSeconds.textContent = picture(getTime.seconds)
+        return getTime.timeRemaining
+    }
 
-        if (!getTime.timeRemaining) clearInterval(updateClock);
+    const updateClock = setInterval(() => {
+        if (!showClock()) clearInterval(updateClock);
     }, 1000);
 
-
-
+    showClock()
 }
 export default timer
