@@ -1,27 +1,33 @@
 import { smoothScroll } from './helpers';
 
 const menu = () => {
-    const menuBtm = document.querySelector('.menu')
     const menu = document.querySelector('menu')
-    const closeBtn = menu.querySelector('.close-btn')
-    const menuItems = menu.querySelectorAll('ul>li>a')
-    const goServiceBlock = document.querySelector('main a')
 
-    const handleMenu = () => {
-        menu.classList.toggle('active-menu')
+    const handleMenu = (opening) => {
+        menu.classList[opening ? 'add' : 'remove']('active-menu')
     }
 
-    menuBtm.addEventListener('click', handleMenu)
-    closeBtn.addEventListener('click', handleMenu)
-    menuItems.forEach(menuItem => menuItem.addEventListener('click', (e) => {
-        handleMenu()
-        smoothScroll(e.target.getAttribute("href"))
-    }))
+    const toggleMenu = (el) => {
+        const selected = (selectors) => el.closest(selectors) !== null
 
-    goServiceBlock.addEventListener('click', (e) => {
-        const el = e.target.closest('main a')
-        smoothScroll(el.getAttribute("href"))
-    })
+        switch (true) {
+            case selected('main .menu'):
+                handleMenu(true)
+                break
+            case selected('main a'):
+                smoothScroll(el.closest('main a').getAttribute("href"))
+                break
+            case selected('menu li>a'):
+                handleMenu(false)
+                smoothScroll(el.getAttribute("href"))
+                break
+            case selected('menu .close-btn')
+                || selected('body:has(menu.active-menu)') && !selected('menu'):
+                handleMenu(false)
+                break
+        }
+    }
 
+    document.body.addEventListener('click', (e) => toggleMenu(e.target))
 }
 export default menu
