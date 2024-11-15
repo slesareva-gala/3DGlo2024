@@ -1,4 +1,13 @@
-* {
+body menu {
+    transform: translateX(200%);
+}
+
+body .active-menu-hide {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: .3s;
+}
+
+.companies .companies-hor-item {
     margin: 0;
-    box-sizing: border-box;
 }
