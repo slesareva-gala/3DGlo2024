@@ -15,6 +15,25 @@ modal()
 calc()
 form()
 tabs()
-slider()
+
+/**
+ * не обязательно указывать значения свойстам параметра селекторов (первый параметр), кроме slidesWrapper и slides 
+ * при указани времен в ms равным 0 (воторой параметр), авто-показ слайдов не выполняется
+ */
+
+slider({
+    slidesWrapper: '.portfolio-content',
+    slides: '.portfolio-item',
+    navigation: {
+        nextEl: '#arrow-right',
+        prevEl: '#arrow-left',
+    },
+    pagination: 'ul.portfolio-dots',
+    class: {
+        slideActive: 'portfolio-item-active',
+        dot: 'dot',
+        dotActive: 'dot-active'
+    }
+}, 2000)
 sliderSwipper()
 

@@ -8,6 +8,34 @@ body .active-menu-hide {
     transition: .3s;
 }
 
+#arrow-right,
+#arrow-left {
+    display: none;
+}
+
+/* стили по умолчанию слайдера */
+.sld-slide-active {
+    opacity: 1;
+}
+
+.sld-dot {
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+    margin: 0 10px;
+    border-radius: 50%;
+    border: solid #fff;
+    display: inline-block;
+    -webkit-transition: background-color, -webkit-transform .4s;
+    transition: background-color, transform .4s, -webkit-transform .4s;
+}
+
+.sld-dot-active {
+    background-color: #19b5fe;
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+}
+
 .companies .companies-hor-item {
     margin: 0;
 }
