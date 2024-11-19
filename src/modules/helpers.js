@@ -27,6 +27,7 @@ export const animate = ({ draw, duration = 1000, timingplane = 'linear' }) => {
     let progress = countAnimation === 0 ? 0 :
       countAnimation > maxCountAnimation - 1 ? 1 :
         timing[timingplane](countAnimation / maxCountAnimation);
+
     draw(progress); // отрисовать
 
     if (countAnimation < maxCountAnimation) {
