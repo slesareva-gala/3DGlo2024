@@ -1,23 +1,25 @@
 /* всякие ползности */
 "use strict";
 
-
 // универсальный аниматор
-export const animate = ({ draw, duration = 1000, timingplane = 'linear' }) => {
+export const animate = ({ draw = () => { }, duration = 1000, timingplane = 'linear', timeframe = 16.7, execute = () => true }) => {
 
   const timing = {
     linear: (x) => x,
 
     // Кубические функции Безье (в т.ч. ease, ease-in, ease-out и ease-in-out)
-    easeOutCubic: (x) => 1 - Math.pow(1 - x, 3),        // для вертикального скролла
-    easeInOutCubic: (x) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
-    easeOutQuart: (x) => 1 - Math.pow(1 - x, 5),
-    aseOutExpo: (x) => x === 1 ? 1 : 1 - Math.pow(2, -10 * x),  // для выезжающих модальных окон
+    easeOutCubic: (x) => 1 - Math.pow(1 - x, 3),        // для вертикального скролла (равномерное движение, замедление к концу)
+    easeInOutCubic: (x) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2, // (начало(1/3) ~ окончание(1/3) замедлено, центр плавный(1/3))
+    easeOutQuart: (x) => 1 - Math.pow(1 - x, 5), // подхожа на easeInOutCubic, но начало и окончание продолжительнее, а центр - интенсивнее
+    easeOutExpo: (x) => x === 1 ? 1 : 1 - Math.pow(2, -10 * x),  // для выезжающих модальных окон (интенсивное движение, длительное замедление к концу )
+    easeInExpo: (x) => x === 0 ? 0 : Math.pow(2, 10 * x - 10), // для перебора цифр, ~ 1/3 задержки, затем рост
+
   };
   if (!(timingplane in timing)) { timingplane = 'linear'; }
 
+
   // максимальное количество анимаций
-  const maxCountAnimation = Math.max(Math.round(duration / 16.7), 1);
+  const maxCountAnimation = Math.max(Math.round(duration / timeframe), 1);
   // счетчик анимаций, максимальное количество анимаций
   let countAnimation = 0;
 
@@ -28,6 +30,8 @@ export const animate = ({ draw, duration = 1000, timingplane = 'linear' }) => {
       countAnimation > maxCountAnimation - 1 ? 1 :
         timing[timingplane](countAnimation / maxCountAnimation);
 
+    if (!execute()) return  // прервать анимацию 
+
     draw(progress); // отрисовать
 
     if (countAnimation < maxCountAnimation) {
@@ -35,7 +39,6 @@ export const animate = ({ draw, duration = 1000, timingplane = 'linear' }) => {
       requestAnimationFrame(animation);
     }
   });
-
 };
 
 // плавный скролл по a.href

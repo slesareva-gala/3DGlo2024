@@ -14,7 +14,7 @@ const modal = () => {
 
         } else {
             animate({
-                timingplane: 'aseOutExpo',
+                timingplane: 'easeOutExpo',
                 draw(progress) {
                     modalContent.style.left = `${100 - progress * 50}%`;
                     modalContent.style.transform = `translateX( ${-20 * progress}rem )`;
