@@ -1,6 +1,6 @@
 import { animate } from './helpers';
 
-const calc = (prices = [0, 100, 120, 110]) => {
+const calc = (prices = [0, 100, 100, 100]) => {
     const calcBlock = document.querySelector('.calc-block')
     const calcType = calcBlock.querySelector('.calc-type')
     const calcSquare = calcBlock.querySelector('.calc-square')
@@ -13,14 +13,13 @@ const calc = (prices = [0, 100, 120, 110]) => {
         if (totalValue) {
             calcBlock.lastAnimationTotal = true
             animate({
-                timingplane: 'easeInExpo',
                 draw(progress) {
-                    total.textContent = progress < 0.005 ? totalValue : Math.floor(totalValue * progress)
+                    total.textContent = progress === 0 ? 1 : Math.floor(totalValue * progress)
                 },
                 duration: time,
                 execute: function () { return calcBlock.lastAnimationTotal }
             });
-        };
+        } else total.textContent = 0
     };
 
     const countCalc = () => {
@@ -30,11 +29,11 @@ const calc = (prices = [0, 100, 120, 110]) => {
         const calcCountValue = +calcCount.value > 1 ? 1 + calcCount.value * 0.1 : 1
         const calcDayValue = !+calcDay.value ? 1 : +calcDay.value < 5 ? 2 : +calcDay.value < 10 ? 1.5 : 1
 
-        let totalValue = total.textContent
+        let totalValue = 0
         if (calcTypeValue && calcSquareValue) {
-            total.textContent = Math.round(price * calcTypeValue * calcSquareValue * calcCountValue * calcDayValue)
-        } else total.textContent = 0
-        if (totalValue !== total.textContent) animationTotal(+total.textContent, 1500)
+            totalValue = Math.round(price * calcTypeValue * calcSquareValue * calcCountValue * calcDayValue)
+        }
+        if (totalValue !== +total.textContent) animationTotal(totalValue, 1500)
     }
 
     calcBlock.addEventListener('input', e => {
