@@ -25,15 +25,10 @@ const calc = (prices = [0, 100, 120, 110]) => {
 
     const countCalc = () => {
         const price = prices[calcType.selectedIndex]
-        console.log('price: ', price);
         const calcTypeValue = +calcType.value
-        console.log('calcTypeValue: ', calcTypeValue);
         const calcSquareValue = +calcSquare.value
-        console.log('calcSquareValue: ', calcSquareValue);
         const calcCountValue = +calcCount.value > 1 ? 1 + calcCount.value * 0.1 : 1
-        console.log('calcCountValue: ', calcCountValue);
         const calcDayValue = !+calcDay.value ? 1 : +calcDay.value < 5 ? 2 : +calcDay.value < 10 ? 1.5 : 1
-        console.log('calcDayValue: ', calcDayValue);
 
         let totalValue = total.textContent
         if (calcTypeValue && calcSquareValue) {
