@@ -1,6 +1,6 @@
 import { animate } from './helpers';
 
-const calc = (prices = [0, 100, 100, 100]) => {
+const calc = (prices = [0, 100, 120, 110]) => {
     const calcBlock = document.querySelector('.calc-block')
     const calcType = calcBlock.querySelector('.calc-type')
     const calcSquare = calcBlock.querySelector('.calc-square')
@@ -13,8 +13,9 @@ const calc = (prices = [0, 100, 100, 100]) => {
         if (totalValue) {
             calcBlock.lastAnimationTotal = true
             animate({
+                timingplane: 'easeInOutCubic',
                 draw(progress) {
-                    total.textContent = progress === 0 ? 1 : Math.floor(totalValue * progress)
+                    total.textContent = Math.floor(totalValue * progress) || 1
                 },
                 duration: time,
                 execute: function () { return calcBlock.lastAnimationTotal }
@@ -33,7 +34,7 @@ const calc = (prices = [0, 100, 100, 100]) => {
         if (calcTypeValue && calcSquareValue) {
             totalValue = Math.round(price * calcTypeValue * calcSquareValue * calcCountValue * calcDayValue)
         }
-        if (totalValue !== +total.textContent) animationTotal(totalValue, 1500)
+        if (totalValue !== +total.textContent) animationTotal(totalValue, 500)
     }
 
     calcBlock.addEventListener('input', e => {

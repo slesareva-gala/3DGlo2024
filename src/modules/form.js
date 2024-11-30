@@ -4,15 +4,20 @@ const form = () => {
         const el = e.target
 
         if (el.closest('form input')) {
-            switch (el.type) {
-                case 'text':
-                    el.value = el.value.replace(/[^а-я-\s]/gi, '')
+            el.parentNode.classList.remove('no-valid')
+
+            switch (`${el.type}${el.type === "text" ? "_" + el.name : ""}`) {
+                case 'text_user_name':
+                    el.value = el.value.replace(/[^а-яё\-\s]/gi, '')
+                    break
+                case 'text_user_message':
+                    el.value = el.value.replace(/[^а-яё\s\d.,;!?:()"—–]/gi, '')
                     break
                 case 'tel':
-                    el.value = el.value.replace(/[^\d()-]/g, '')
+                    el.value = el.value.replace(/[^\d()\-+]/g, '')
                     break
                 case 'email':
-                    el.value = el.value.replace(/[^a-z\d@\-_.!~*']/gi, '')
+                    el.value = el.value.replace(/[^a-z\d@_.!~*']/gi, '')
                     break
             }
         }
@@ -28,7 +33,7 @@ const form = () => {
                 .replace(/(-{2,})|(\s{2,})/g, (_, dash) => dash ? '-' : ' ')
 
             // первая буква слова большая, остальные маленькие  
-            if (el.type === 'text')
+            if (el.type === 'text' && el.name === 'user_name')
                 el.value = el.value.replace(/((?:^|\s|-)[а-яё])([а-яё]*)/gi,
                     (_, first, next) => first.toUpperCase() + next.toLowerCase())
         }

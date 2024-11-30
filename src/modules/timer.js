@@ -20,7 +20,10 @@ const timer = (deadline) => {
         const picture = (n) => (n < 10) ? ('0' + n).slice(-2) : n;
 
         timerHours.textContent = picture(getTime.hours)
+        timerHours.nextElementSibling.textContent = ":"
+        console.log(timerHours.nextElementSibling)
         timerMinutes.textContent = picture(getTime.minutes)
+        timerMinutes.nextElementSibling.textContent = ":"
         timerSeconds.textContent = picture(getTime.seconds)
         return getTime.timeRemaining
     }
