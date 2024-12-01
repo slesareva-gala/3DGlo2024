@@ -16,9 +16,13 @@ const sendForm = ({ url, formsId = [], someElem = [] }) => {
         success: 'Спасибо! Наш менеджер с вами свяжется!',
         invalid: `Для отправки зявки, введите корректные данные`
     }
-    const delStatus = () => {
-        setTimeout(() => { statusBlock.textContent = "" }, 5000)
-    }
+    let delStatus = (() => {
+        let timer
+        return () => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { statusBlock.textContent = ""; }, 5000);
+        }
+    })()
 
     const regValid = {
         "user_phone": /[\d()\-+]/g,
