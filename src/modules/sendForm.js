@@ -16,6 +16,9 @@ const sendForm = ({ url, formsId = [], someElem = [] }) => {
         success: 'Спасибо! Наш менеджер с вами свяжется!',
         invalid: `Для отправки зявки, введите корректные данные`
     }
+    const delStatus = () => {
+        setTimeout(() => { statusBlock.textContent = "" }, 5000)
+    }
 
     const regValid = {
         "user_phone": /[\d()\-+]/g,
@@ -43,7 +46,7 @@ const sendForm = ({ url, formsId = [], someElem = [] }) => {
             let success = true
 
             list.forEach(input => {
-                if (!isValid(input.name, input.value) || !input.value.trim().length && input.required) {
+                if (!isValid(input.name, input.value) || !input.value.trim().length) {
                     input.parentNode.classList.add('no-valid')
                     success = false
                 }
@@ -71,11 +74,12 @@ const sendForm = ({ url, formsId = [], someElem = [] }) => {
 
             sendData(formBody)
                 .then(() => {
-                    delProgress()
                     statusBlock.textContent = status.success
                     formElements.forEach((input) => {
                         input.value = ''
                     })
+                    delProgress()
+                    delStatus()
                 })
                 .catch(() => {
                     delProgress()
