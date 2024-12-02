@@ -1,45 +1,36 @@
-/* всякие ползности */
 "use strict";
 
-// получение/отправка по AJAX запросу 
 export const dbload = (url) => fetch(url)
   .then(response => {
     if (!response.ok) throw new Error(response.statusText)
     return response.json()
   })
 
-// универсальный аниматор
 export const animate = ({ draw = () => { }, duration = 1000, timingplane = 'linear', timeframe = 16.7, execute = () => true }) => {
 
   const timing = {
     linear: (x) => x,
 
-    // Кубические функции Безье (в т.ч. ease, ease-in, ease-out и ease-in-out)
-    easeOutCubic: (x) => 1 - Math.pow(1 - x, 3),        // для вертикального скролла (равномерное движение, замедление к концу)
-    easeInOutCubic: (x) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2, // (начало(1/3) ~ окончание(1/3) замедлено, центр плавный(1/3))
-    easeOutQuart: (x) => 1 - Math.pow(1 - x, 5), // подхожа на easeInOutCubic, но начало и окончание продолжительнее, а центр - интенсивнее
-    easeOutExpo: (x) => x === 1 ? 1 : 1 - Math.pow(2, -10 * x),  // для выезжающих модальных окон (интенсивное движение, длительное замедление к концу )
-    easeInExpo: (x) => x === 0 ? 0 : Math.pow(2, 10 * x - 10), // для перебора цифр, ~ 1/3 задержки, затем рост
+    easeOutCubic: (x) => 1 - Math.pow(1 - x, 3),
+    easeInOutCubic: (x) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+    easeOutQuart: (x) => 1 - Math.pow(1 - x, 5),
+    easeOutExpo: (x) => x === 1 ? 1 : 1 - Math.pow(2, -10 * x),
+    easeInExpo: (x) => x === 0 ? 0 : Math.pow(2, 10 * x - 10),
 
   };
   if (!(timingplane in timing)) { timingplane = 'linear'; }
 
-
-  // максимальное количество анимаций
   const maxCountAnimation = Math.max(Math.round(duration / timeframe), 1);
-  // счетчик анимаций, максимальное количество анимаций
   let countAnimation = 0;
 
   requestAnimationFrame(function animation() {
-    // вычисление текущего состояния анимации
-    // число от 0 до 1 с учетом указанной линейности, заданной в настроку timing
     let progress = countAnimation === 0 ? 0 :
       countAnimation > maxCountAnimation - 1 ? 1 :
         timing[timingplane](countAnimation / maxCountAnimation);
 
-    if (!execute()) return  // прервать анимацию 
+    if (!execute()) return
 
-    draw(progress); // отрисовать
+    draw(progress);
 
     if (countAnimation < maxCountAnimation) {
       countAnimation++;
@@ -48,26 +39,21 @@ export const animate = ({ draw = () => { }, duration = 1000, timingplane = 'line
   });
 };
 
-// плавный скролл по a.href
 export const smoothScroll = (selectors, duration = 1000) => {
 
-  // счетчик прокрученных строк и целевое кол-во строк к прокрутке всё за 1 сек
   const scrollY = window.scrollY;
 
-  // необходимо докрутить до начала элемента перехода
   const transitionHeight = document.querySelector(selectors).getBoundingClientRect().top;
 
   animate({
     duration: duration,
     timingplane: 'easeOutCubic',
     draw(progress) {
-      // вертикальный скролл документа
       window.scrollTo(0, scrollY + transitionHeight * progress);
     }
   });
 };
 
-// модальное окно
 export const modal = ({ modal, modalContent, states = 'show', time = undefined }) => {
 
   const shiftContetn = Math.round(modalContent.offsetWidth / 2)

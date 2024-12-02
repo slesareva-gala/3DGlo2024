@@ -27,12 +27,10 @@ const form = () => {
         const el = e.target
 
         if (el.closest('form input')) {
-            //  пробелы или дефисы в начале и конце удаляются
+
             el.value = el.value.replace(/(^[\s-]+)|([\s-]+$)/g, '')
-                // повторяющиеся подряд пробелы|дефисы заменяются на одиночные
                 .replace(/(-{2,})|(\s{2,})/g, (_, dash) => dash ? '-' : ' ')
 
-            // первая буква слова большая, остальные маленькие  
             if (el.type === 'text' && el.name === 'user_name')
                 el.value = el.value.replace(/((?:^|\s|-)[а-яё])([а-яё]*)/gi,
                     (_, first, next) => first.toUpperCase() + next.toLowerCase())

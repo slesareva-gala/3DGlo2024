@@ -27,7 +27,7 @@ const sendForm = ({ url, formsId = [], someElem = [] }) => {
     const regValid = {
         "user_phone": /[\d()\-+]/g,
         "user_name": /[а-яё\s]/gi,
-        "user_message": /[а-яё\s\d.,;!?:()"—–]/gi // длиное тире 0151, короткое 0150
+        "user_message": /[а-яё\s\d.,;!?:()"—–]/gi
     }
     const isValid = (name, value) => (name in regValid) ? value.replace(regValid[name], '').length === 0 : true
 

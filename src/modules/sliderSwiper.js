@@ -3,8 +3,8 @@ import { Navigation } from 'swiper/modules'
 
 const sliderSwipper = () => {
     new Swiper('.swiper', {
-        modules: [Navigation], // добавляет стили по умол. для элемнетов навигации div.swiper-button* в  HTML
-        loop: true,  // карусель
+        modules: [Navigation],
+        loop: true,
         slidesPerView: 1,
         spaceBetween: 10,
         navigation: {

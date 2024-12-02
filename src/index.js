@@ -11,7 +11,6 @@ import sendForm from './modules/sendForm'
 timer('31 december 2024')
 menu()
 popup()
-/* цены за кв.м от вида недвижимости: [не выбрано, квартиры, частный дом, офис] */
 calc([0, 100, 100, 100])
 form()
 sendForm({
@@ -26,11 +25,6 @@ sendForm({
 })
 
 tabs()
-
-/**
- * не обязательно указывать значения свойстам параметра селекторов (первый параметр), кроме slidesWrapper и slides 
- * при указани времен в ms равным 0 (воторой параметр), авто-показ слайдов не выполняется
- */
 
 slider({
     slidesWrapper: '.portfolio-content',
